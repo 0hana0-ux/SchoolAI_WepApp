@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>몽글별 작은 수호자 일기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sky-sparkles" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+
+  <main class="app-shell">
+    <!-- 헤더 -->
+    <header class="top-header">
+      <div class="brand">
+        <span class="brand-badge">School with AI</span>
+        <h1>✨ 몽글별 작은 수호자 일기</h1>
+      </div>
+      <button id="openCollectionBtn" class="ghost-btn" type="button">
+        📖 엔딩 도감 (<span id="collectionCount">0</span>/6)
+      </button>
+    </header>
+
+    <!-- 1. 시작 화면 -->
+    <section id="startScreen" class="card-panel active">
+      <div class="welcome-banner">
+        <p class="subtitle">나의 선택으로 자라나는 반짝임 동화</p>
+        <h2>어떤 동화 속으로 여행을 떠날까요?</h2>
+      </div>
+
+      <div class="setup-grid">
+        <div class="setup-box">
+          <label for="playerNameInput" class="field-label">1. 주인공 이름 (최대 6자)</label>
+          <input
+            id="playerNameInput"
+            type="text"
+            maxlength="6"
+            placeholder="예: 하느리 (비워두면 자동 이름)"
+            class="pastel-input"
+          />
+        </div>
+
+        <div class="setup-box">
+          <span class="field-label">2. 함께할 수호 요정 친구</span>
+          <div id="fairySelector" class="fairy-selector">
+            <button type="button" class="fairy-btn selected" data-fairy="🧚‍♀️ 별빛 요정 루나">🧚‍♀️ 루나</button>
+            <button type="button" class="fairy-btn" data-fairy="🐰 구름 토끼 몽이">🐰 몽이</button>
+            <button type="button" class="fairy-btn" data-fairy="🐱 달빛 고양이 포포">🐱 포포</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-select-section">
+        <span class="field-label">3. 오늘 펼칠 동화책 고르기</span>
+        <div id="storyCards" class="story-cards"></div>
+      </div>
+
+      <button id="startGameBtn" class="primary-btn" type="button">
+        🌟 동화책 펼치기
+      </button>
+    </section>
+
+    <!-- 2. 플레이 화면 -->
+    <section id="playScreen" class="card-panel">
+      <!-- 상단 상태 바 -->
+      <div class="status-bar">
+        <div class="player-meta">
+          <span id="sceneBadge" class="scene-pill">장면 1 / 5</span>
+          <strong id="displayPlayerInfo">주인공 · 요정</strong>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-label">💖 다정함 <span id="kindnessVal">10</span></div>
+            <div class="stat-track"><div id="kindnessBar" class="stat-fill kindness" style="width: 20%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">🌟 용기 <span id="courageVal">10</span></div>
+            <div class="stat-track"><div id="courageBar" class="stat-fill courage" style="width: 20%"></div></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">🎨 상상력 <span id="imaginationVal">10</span></div>
+            <div class="stat-track"><div id="imaginationBar" class="stat-fill imagination" style="width: 20%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 중앙 동화 삽화 & 본문 -->
+      <article class="story-stage">
+        <div id="sceneIllustration" class="illustration-box">
+          <div id="sceneEmoji" class="scene-emoji">☁️✨🌸</div>
+          <p id="sceneTitle" class="scene-chapter">구름 정원의 아침</p>
+        </div>
+
+        <div class="story-book-page">
+          <p id="storyText" class="story-text">이야기를 불러오는 중이에요...</p>
+          <div id="statToast" class="stat-toast hidden"></div>
+        </div>
+      </article>
+
+      <!-- 로딩 인디케이터 -->
+      <div id="loadingBox" class="loading-box hidden">
+        <div class="spinner"></div>
+        <p>요정이 다음 동화 페이지를 반짝이며 적고 있어요...</p>
+      </div>
+
+      <!-- 하단 선택지 카드 3개 -->
+      <div id="choicesContainer" class="choices-grid"></div>
+    </section>
+
+    <!-- 3. 엔딩 화면 -->
+    <section id="endingScreen" class="card-panel">
+      <div class="ending-badge">🎉 동화 완성! 나만의 수호자 카드</div>
+      <div id="endingCard" class="ending-showcase">
+        <div id="endingIcon" class="ending-icon">🌈</div>
+        <h2 id="endingTitle" class="ending-title">조화로운 무지개 수호자</h2>
+        <p id="endingSubtitle" class="ending-subtitle"></p>
+
+        <div class="ending-stats-summary" id="endingStatsSummary"></div>
+
+        <div class="ai-review-box">
+          <span class="review-tag">💌 요정의 한 줄 동화 평</span>
+          <p id="endingReviewText"></p>
+        </div>
+      </div>
+
+      <div class="ending-actions">
+        <button id="replayBtn" class="primary-btn" type="button">🔄 다른 선택으로 다시 읽기</button>
+        <button id="endingToCollectionBtn" class="ghost-btn" type="button">📖 내 엔딩 도감 보기</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 엔딩 도감 모달 -->
+  <div id="collectionModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📖 반짝임 엔딩 도감</h3>
+        <button id="closeCollectionBtn" class="icon-close-btn" type="button" aria-label="닫기">✕</button>
+      </div>
+      <p class="modal-desc">동화를 끝까지 읽으면 특별한 수호자 엔딩 카드가 도감에 모입니다!</p>
+      <div id="collectionGrid" class="collection-grid"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
