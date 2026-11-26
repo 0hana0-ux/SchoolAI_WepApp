@@ -1,0 +1,9 @@
+{
+  "name": "mongle-star-fairy-tale",
+  "version": "1.0.0",
+  "description": "몽글별 작은 수호자 일기 - School with AI 인터랙티브 동화 육성 웹앱",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
