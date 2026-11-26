@@ -5,9 +5,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const apiKey = (process.env.AI_API_KEY || STUDIO_DEFAULT_KEY).trim();
+  // Gemini_API_Key 우선 확인, 없으면 AI_API_KEY, 그 외 기본값 순서로 읽음
+  const apiKey = (
+    process.env.Gemini_API_Key ||
+    process.env.AI_API_KEY ||
+    STUDIO_DEFAULT_KEY
+  ).trim();
+
   if (!apiKey) {
-    return res.status(500).json({ error: 'AI_API_KEY가 설정되지 않았습니다.' });
+    return res.status(500).json({ error: 'Gemini_API_Key가 설정되지 않았습니다.' });
   }
 
   try {
@@ -39,7 +45,7 @@ ${
 }`
     : `{
   "emoji": "장면에 어울리는 이모지 3개",
-  "chapter": "제${sceneNumber}장 · 동화 소제목",
+  "chapter": "제\${sceneNumber}장 · 동화 소제목",
   "storyText": "이전 선택을 자연스럽게 이어받은 다음 장면 이야기 (2~4문장)",
   "choices": [
     { "type": "단어 카드 또는 행동 카드", "text": "초등학생용 선택지 1", "stat": "kindness", "delta": 15 },
